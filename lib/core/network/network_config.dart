@@ -1,13 +1,12 @@
 //Switch Environment
-bool isLive = false;
+bool isLive = true;
 
 //Live url here
-String liveUrl =
-    'http://ec2-13-41-70-227.eu-west-2.compute.amazonaws.com/api/v1/';
+String liveUrl = 'https://api.ceucenergies.com/api/v1/';
 
 //Staging base url here
 String stagingUrl =
-    'http://ec2-13-41-70-227.eu-west-2.compute.amazonaws.com/api/v1/';
+    'http://ec2-13-41-197-98.eu-west-2.compute.amazonaws.com/api/v1/';
 
 class NetworkConfig {
   String baseUrl = isLive ? liveUrl : stagingUrl;

@@ -16,8 +16,8 @@ class FormValidationLogics {
   }
 
   static String isOTP(String value) {
-    if (value.length < 4) {
-      return 'OTP must be six (4) digits';
+    if (value.length < 6) {
+      return 'OTP must be six (6) digits';
     }
 
     return null;

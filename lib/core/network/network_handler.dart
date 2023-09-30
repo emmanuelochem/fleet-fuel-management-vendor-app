@@ -160,7 +160,7 @@ class NetworkHandler {
     }).then((response) {
       //log(response.toString());
       if (response != null) {
-        if (response.statusCode == 200 &&
+        if ((response.statusCode >= 200 && response.statusCode < 300) &&
             response.data["status"] == "success") {
           if (alertDialog) {
             // NikeAlertDialog(message: response.data["message"]);

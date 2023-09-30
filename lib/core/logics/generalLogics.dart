@@ -4,23 +4,39 @@ import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/providers/user_data_provider.dart';
 import 'package:ceuk_user_app/core/providers/vendor_data_provider.dart';
 import 'package:ceuk_user_app/core/providers/vstaff_data_provider.dart';
+import 'package:ceuk_user_app/modules/authentication/staff_auth_api.dart';
 import 'package:ceuk_user_app/staffs_routes.dart';
-import 'package:ceuk_user_app/user/authentication/api/auth_api.dart';
-import 'package:ceuk_user_app/user_routes.dart';
 import 'package:ceuk_user_app/shared/form/action_button.dart';
 import 'package:ceuk_user_app/shared/form/notice_dialog.dart';
 import 'package:ceuk_user_app/shared/form/snack_bar.dart';
-import 'package:ceuk_user_app/vendor_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class GeneralLogics {
-  static Future<File> takePicture() async {
+  static Future<void> launchURL(url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static Future<File> getGalleryPicture() async {
     final ImagePicker picker = ImagePicker();
 // Pick an image.
     final XFile image = await picker.pickImage(source: ImageSource.gallery);
+    final file = File(image.path);
+    return file;
+  }
+
+  static Future<File> takePicture() async {
+    final ImagePicker picker = ImagePicker();
+// Pick an image.
+    final XFile image = await picker.pickImage(source: ImageSource.camera);
     final file = File(image.path);
     return file;
   }
@@ -40,23 +56,16 @@ class GeneralLogics {
     vendorDataProvider.user = data['user'];
   }
 
-  static Future<void> logoutVendor(BuildContext context) async {
-    GeneralLogics.removeUserData().then((value) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          UserRoutes.login, (Route<dynamic> route) => false);
-    });
-  }
-
   static void setUserDataProvider(UserDataProvider userDataProvider, Map data) {
     userDataProvider.user = data['user'];
   }
 
-  static Future<void> logoutFunction(
-      {BuildContext context, bool isStudent = false}) async {
+  static Future<void> logoutFunction({
+    BuildContext context,
+  }) async {
     GeneralLogics.removeUserData().then((value) {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          isStudent ? UserRoutes.login : VendorRoutes.login,
-          (Route<dynamic> route) => false);
+          StaffsRoutes.login, (Route<dynamic> route) => false);
     });
   }
 
@@ -76,13 +85,15 @@ class GeneralLogics {
             'Your session has expired, please login again.',
             FlushbarType.error,
             context);
-        GeneralLogics.logoutFunction(context: context, isStudent: true);
+        GeneralLogics.logoutFunction(
+          context: context,
+        );
       }
     } else {
       if (context.mounted) {
-        AuthApi request = AuthApi();
+        StaffsAuthApi request = StaffsAuthApi();
         await request
-            .getUserData(
+            .getStaffData(
           context: context,
         )
             .then((res) async {
@@ -92,7 +103,9 @@ class GeneralLogics {
             Map data = {'user': res['data']};
             GeneralLogics.setUserDataProvider(userDataProvider, data);
           } else {
-            GeneralLogics.logoutFunction(context: context, isStudent: true);
+            GeneralLogics.logoutFunction(
+              context: context,
+            );
           }
         });
       }
@@ -220,5 +233,14 @@ class GeneralLogics {
               secondButtonText: onCancelText,
               secondButtonAction: onCancel,
             ));
+  }
+
+  static String formatCurrency(String amount) {
+    final formatCurrency = NumberFormat.currency(name: 'NGN', symbol: 'NGN ');
+    return formatCurrency
+        .format(
+          double.tryParse(amount).abs(),
+        )
+        .replaceAll('.00', '');
   }
 }

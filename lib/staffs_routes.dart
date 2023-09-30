@@ -1,11 +1,10 @@
-import 'package:ceuk_user_app/vendor_staff/authentication/staff_login_page.dart';
-import 'package:ceuk_user_app/vendor_staff/authentication/staff_splashscreen.dart';
-import 'package:ceuk_user_app/vendor_staff/authentication/staff_welcome_page.dart';
-import 'package:ceuk_user_app/vendor_staff/dashboard/home/staff_home.dart';
-import 'package:ceuk_user_app/vendor_staff/dashboard/request/staff_request_details_page.dart';
+import 'package:ceuk_user_app/modules/authentication/staff_login_page.dart';
+import 'package:ceuk_user_app/modules/authentication/staff_splashscreen.dart';
+import 'package:ceuk_user_app/modules/authentication/staff_welcome_page.dart';
+import 'package:ceuk_user_app/modules/home/staff_dashboard.dart';
+import 'package:ceuk_user_app/modules/home/staff_home.dart';
+import 'package:ceuk_user_app/modules/request/staff_request_details_page.dart';
 import 'package:flutter/material.dart';
-
-import 'vendor_staff/dashboard/home/staff_dashboard.dart';
 
 class StaffsRoutes {
   static const String splashScreen = '/splash-screen';

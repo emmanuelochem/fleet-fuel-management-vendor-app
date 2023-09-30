@@ -2,6 +2,7 @@ import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/shared/form/action_button.dart';
 import 'package:ceuk_user_app/shared/form/notice_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OptionsDialog {
   static Future<void> messageDialog(BuildContext context, String heading,
@@ -18,9 +19,10 @@ class OptionsDialog {
             buttonAction: accept,
             buttonText: 'Okay, Got It!',
             title: content,
+            titleFontSize: 19.sp,
             secondButtonShape: ButtonShape.squircle,
             secondButtonSize: ButtonSizes.large,
-            secondButtonBackgroundColor: UIColors.primary500,
+            secondButtonBackgroundColor: UIColors.primary600,
             secondButtonTextColor: UIColors.primary,
             dialogBackground: UIColors.white,
             secondButtonText: 'No, please',
