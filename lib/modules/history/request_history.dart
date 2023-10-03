@@ -1,30 +1,34 @@
 import 'package:ceuk_user_app/core/constants/app_constant.dart';
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
-import 'package:ceuk_user_app/modules/transaction/staff_transaction_api.dart';
+import 'package:ceuk_user_app/core/logics/generalLogics.dart';
+import 'package:ceuk_user_app/modules/history/request_api.dart';
+import 'package:ceuk_user_app/modules/history/request_details.dart';
 import 'package:ceuk_user_app/shared/form/empty_data_notice.dart';
 import 'package:ceuk_user_app/shared/widgets/general_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:recase/recase.dart';
 
-class StaffTransactionPage extends StatefulWidget {
-  const StaffTransactionPage({Key key}) : super(key: key);
+class RequestHistory extends StatefulWidget {
+  const RequestHistory({Key key}) : super(key: key);
 
   @override
   _ManageMessengersState createState() => _ManageMessengersState();
 }
 
-class _ManageMessengersState extends State<StaffTransactionPage> {
+class _ManageMessengersState extends State<RequestHistory> {
   bool isLoaded = false;
 
   Future<List> getBanks() async {
     setState(() {
       isLoaded = false;
     });
-    StaffTransactionsApi vendorsBankApi = StaffTransactionsApi();
+    UserRequestApi vendorsBankApi = UserRequestApi();
     var res = await vendorsBankApi
-        .getTransactions(
+        .getAllRequests(
       context: context,
     )
         .then((value) {
@@ -55,8 +59,8 @@ class _ManageMessengersState extends State<StaffTransactionPage> {
     return Scaffold(
       backgroundColor: UIColors.secondary600,
       appBar: const GeneralAppBar(
-        title: 'Transactions',
-        leading: false,
+        title: 'Requests History',
+        //leading: false,
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List>(
@@ -89,16 +93,16 @@ class _ManageMessengersState extends State<StaffTransactionPage> {
                               height: 0.016.sh,
                             ),
                             Container(
-                              // height: 1.sh,
+                              height: 1.sh,
                               padding:
                                   EdgeInsets.symmetric(horizontal: 0.058.sw),
                               child: ListView.builder(
-                                shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: vendorData.length,
                                 itemBuilder: (context, index) {
                                   return Transaction(
-                                      transaction: vendorData[index]);
+                                    history: vendorData[index],
+                                  );
                                 },
                               ),
                             ),
@@ -111,23 +115,22 @@ class _ManageMessengersState extends State<StaffTransactionPage> {
 }
 
 class Transaction extends StatelessWidget {
-  const Transaction({Key key, this.transaction}) : super(key: key);
+  const Transaction({Key key, this.history}) : super(key: key);
 
-  final Map transaction;
+  final Map history;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // showMaterialModalBottomSheet(
-        //   context: context,
-        //   expand: false,
-        //   isDismissible: false,
-        //   enableDrag: false,
-        //   //elevation: 10,
-        //   backgroundColor: Colors.transparent,
-        //   builder: (context) =>
-        //       VendorsTransactionDetailsScreen(history: transaction),
-        // );
+        showMaterialModalBottomSheet(
+          context: context,
+          expand: false,
+          isDismissible: false,
+          enableDrag: false,
+          //elevation: 10,
+          backgroundColor: Colors.transparent,
+          builder: (context) => HistoryDetailScreen(history: history),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 0.01.sh),
@@ -144,35 +147,19 @@ class Transaction extends StatelessWidget {
               height: 0.040.sh,
               width: 0.040.sh,
               decoration: BoxDecoration(
-                  color: (transaction['type'] == 'credit' &&
-                          transaction['status'] == 'success')
+                  color: history['status'] == 'approved'
                       ? Colors.green
-                      : (transaction['type'] == 'credit' &&
-                              transaction['status'] == 'pending')
+                      : history['status'] == 'pending'
                           ? Colors.amber
-                          : (transaction['type'] == 'debit' &&
-                                  transaction['status'] == 'success')
-                              ? UIColors.primary300
-                              : (transaction['type'] == 'debit' &&
-                                      transaction['status'] == 'pending')
-                                  ? Colors.amber
-                                  : UIColors.primary300,
+                          : UIColors.primary300,
                   borderRadius: BorderRadius.circular(100)),
               child: Icon(
-                (transaction['type'] == 'credit' &&
-                        transaction['status'] == 'success')
-                    ? PhosphorIcons.arrow_down
-                    : (transaction['type'] == 'credit' &&
-                            transaction['status'] == 'pending')
-                        ? PhosphorIcons.arrow_down
-                        : (transaction['type'] == 'debit' &&
-                                transaction['status'] == 'success')
-                            ? PhosphorIcons.arrow_up
-                            : (transaction['type'] == 'debit' &&
-                                    transaction['status'] == 'pending')
-                                ? PhosphorIcons.arrow_up
-                                : PhosphorIcons.x,
-                size: 0.027.sh,
+                history['status'] == 'approved'
+                    ? PhosphorIcons.check_fill
+                    : history['status'] == 'pending'
+                        ? PhosphorIcons.pause_fill
+                        : PhosphorIcons.x,
+                size: history['status'] == 'pending' ? 0.027.sh : 0.027.sh,
                 color: Colors.white,
               ),
             ),
@@ -185,14 +172,15 @@ class Transaction extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        transaction['type'] == 'credit'
-                            ? 'Wallet funding'
-                            : transaction['description'],
+                        history['type'] == 'vehicle'
+                            ? history['requestable']['driver_name']
+                            : '${history['requestable']['first_name']} ${history['requestable']['last_name']}',
                         style: TypographyStyle.bodySmall.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 14.sp),
                       ),
                       Text(
-                        "NGN ${transaction['amount']}",
+                        GeneralLogics.formatCurrency(
+                            history['amount'].toString()),
                         style: TypographyStyle.bodySmall.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 13.sp),
                       ),
@@ -202,45 +190,20 @@ class Transaction extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        " ${AppConstant.formatDate.format(DateTime.parse(transaction['created_at']))}",
+                        "${ReCase(history['type'] == 'vehicle' ? history['type'] : 'Messenger').sentenceCase} - ${AppConstant.formatDate.format(DateTime.parse(history['created_at']))}",
                         style: TypographyStyle.bodySmall.copyWith(
                           color: UIColors.secondary300,
                           fontSize: 12.sp,
                         ),
                       ),
-                      Text(
-                        (transaction['type'] == 'credit' &&
-                                transaction['status'] == 'success')
-                            ? 'Credit'
-                            : (transaction['type'] == 'credit' &&
-                                    transaction['status'] == 'pending')
-                                ? 'Pending credit'
-                                : (transaction['type'] == 'debit' &&
-                                        transaction['status'] == 'success')
-                                    ? 'Debit'
-                                    : (transaction['type'] == 'debit' &&
-                                            transaction['status'] == 'pending')
-                                        ? 'Pending debit'
-                                        : transaction['type'],
-                        style: TypographyStyle.bodySmall.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
-                          color: (transaction['type'] == 'credit' &&
-                                  transaction['status'] == 'success')
-                              ? Colors.green
-                              : (transaction['type'] == 'credit' &&
-                                      transaction['status'] == 'pending')
-                                  ? Colors.amber
-                                  : (transaction['type'] == 'debit' &&
-                                          transaction['status'] == 'success')
-                                      ? UIColors.primary300
-                                      : (transaction['type'] == 'debit' &&
-                                              transaction['status'] ==
-                                                  'pending')
-                                          ? Colors.amber
-                                          : UIColors.primary300,
-                        ),
-                      ),
+                      // Text(
+                      //   transactionName,
+                      //   style: TypographyStyle.bodySmall.copyWith(
+                      //     fontWeight: FontWeight.bold,
+                      //     fontSize: 12.sp,
+                      //     color: colorScheme.background,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

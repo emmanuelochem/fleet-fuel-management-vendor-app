@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ceuk_user_app">
    <application
-        android:label="ceuk_user_app"
+        android:label="Ceuc Attendant"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
          android:requestLegacyExternalStorage="true">

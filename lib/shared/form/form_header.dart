@@ -12,8 +12,6 @@ class FormHeader extends StatelessWidget {
     this.centerDescription = false,
     this.descriptionFontSize,
     this.titleFontSize,
-    this.hasCustomTitleSize = false,
-    this.hasDescriptionTitleSize = false,
   }) : super(key: key);
   final String title;
   final String description;
@@ -21,8 +19,6 @@ class FormHeader extends StatelessWidget {
   final bool centerDescription;
   final double titleFontSize;
   final double descriptionFontSize;
-  final bool hasCustomTitleSize;
-  final bool hasDescriptionTitleSize;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +31,8 @@ class FormHeader extends StatelessWidget {
               ? Text(
                   title.toString(),
                   textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-                  style: hasCustomTitleSize
-                      ? TypographyStyle.heading4
-                          .copyWith(fontSize: titleFontSize)
-                      : TypographyStyle.heading4,
+                  style: TypographyStyle.heading4
+                      .copyWith(fontSize: titleFontSize ?? 20.sp),
                 )
               : const SizedBox.shrink(),
           description != null
@@ -54,15 +48,10 @@ class FormHeader extends StatelessWidget {
                         textAlign: centerDescription
                             ? TextAlign.center
                             : TextAlign.start,
-                        style: hasDescriptionTitleSize
-                            ? TypographyStyle.bodyMediumn.copyWith(
-                                fontSize: descriptionFontSize,
-                                color: UIColors.secondary300,
-                              )
-                            : TypographyStyle.bodyMediumn.copyWith(
-                                fontSize: 17.sp,
-                                color: UIColors.secondary300,
-                              )),
+                        style: TypographyStyle.bodyMediumn.copyWith(
+                          fontSize: descriptionFontSize ?? 15.sp,
+                          color: UIColors.secondary300,
+                        )),
                   ],
                 )
               : const SizedBox.shrink(),

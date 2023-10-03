@@ -59,7 +59,10 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: UIColors.secondary600,
-      appBar: const GeneralAppBar(title: 'Sales Summary'),
+      appBar: const GeneralAppBar(
+        title: 'Sales Summary',
+        leading: false,
+      ),
       body: SingleChildScrollView(
         key: UniqueKey(),
         padding: EdgeInsets.only(

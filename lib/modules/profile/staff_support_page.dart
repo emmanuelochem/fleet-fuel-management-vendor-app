@@ -6,14 +6,14 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StaffSupportPage extends StatefulWidget {
-  const StaffSupportPage({Key key}) : super(key: key);
+class SupportPage extends StatefulWidget {
+  const SupportPage({Key key}) : super(key: key);
 
   @override
-  State<StaffSupportPage> createState() => _StaffSupportPageState();
+  State<SupportPage> createState() => _SupportPageState();
 }
 
-class _StaffSupportPageState extends State<StaffSupportPage> {
+class _SupportPageState extends State<SupportPage> {
   _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url, enableJavaScript: true);

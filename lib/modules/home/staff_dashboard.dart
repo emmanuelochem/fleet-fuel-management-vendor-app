@@ -4,8 +4,8 @@ import 'package:ceuk_user_app/modules/home/staff_home.dart';
 import 'package:ceuk_user_app/modules/profile/vstaff_profile.dart';
 import 'package:ceuk_user_app/modules/transaction/transaction_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconsax/iconsax.dart';
 
 class StaffDashboard extends StatefulWidget {
   const StaffDashboard({Key key}) : super(key: key);
@@ -19,8 +19,9 @@ class _HomePageState extends State<StaffDashboard> {
 
   static final List<Widget> _tabPages = <Widget>[
     const StaffHomePage(),
-    const StaffTransactionPage(),
     const AnalyticsPage(),
+    const StaffTransactionPage(),
+
     const VendorStaffAccount(),
     //Container()
   ];
@@ -84,59 +85,61 @@ class _HomePageState extends State<StaffDashboard> {
               BottomNavigationBarItem(
                   icon: Padding(
                     padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                    child: const Icon(Iconsax.home),
+                    child: const Icon(PhosphorIcons.house),
                   ),
                   activeIcon: Padding(
                     padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                    child: const Icon(Iconsax.home),
+                    child: const Icon(PhosphorIcons.house_fill),
                   ),
                   label: 'Home'),
               BottomNavigationBarItem(
                   icon: Padding(
+                    padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
+                      child: const Icon(PhosphorIcons.chart_bar),
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
+                      child: const Icon(
+                        PhosphorIcons.chart_bar_fill,
+                      ),
+                    ),
+                  ),
+                  label: 'Summary'),
+              BottomNavigationBarItem(
+                  icon: Padding(
                     padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
                     child: const Icon(
-                      Iconsax.money,
+                      PhosphorIcons.currency_ngn,
                     ),
                   ),
                   activeIcon: Padding(
                     padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
                     child: const Icon(
-                      Iconsax.money,
+                      PhosphorIcons.currency_ngn_fill,
                     ),
                   ),
-                  label: 'Sales History'),
+                  label: 'Transactions'),
               BottomNavigationBarItem(
                   icon: Padding(
                     padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                      child: const Icon(Iconsax.people),
+                      child: const Icon(PhosphorIcons.user),
                     ),
                   ),
                   activeIcon: Padding(
                     padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                      child: const Icon(Iconsax.people),
+                      child: const Icon(PhosphorIcons.user_fill),
                     ),
                   ),
-                  label: 'Profile'),
-              // BottomNavigationBarItem(
-              //     icon: Padding(
-              //       padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
-              //       child: Padding(
-              //         padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-              //         child: const Icon(Iconsax.user),
-              //       ),
-              //     ),
-              //     activeIcon: Padding(
-              //       padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
-              //       child: Padding(
-              //         padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-              //         child: const Icon(Iconsax.user),
-              //       ),
-              //     ),
-              //     label: 'Profile')
+                  label: 'Account')
             ]),
       ),
     );

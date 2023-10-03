@@ -1,12 +1,12 @@
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
 import 'package:ceuk_user_app/core/providers/vstaff_data_provider.dart';
+import 'package:ceuk_user_app/modules/home/menu_cube_button.dart';
 import 'package:ceuk_user_app/modules/profile/staff_support_page.dart';
 import 'package:ceuk_user_app/modules/request/staff_search_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class StaffHomePage extends StatefulWidget {
@@ -81,16 +81,16 @@ class _VendorHomeState extends State<StaffHomePage> {
                     children: [
                       Text(
                         "${staffDataProvider.user['first_name']} ${staffDataProvider.user['last_name']}",
-                        style: TextStyle(
-                            fontSize: 22.sp, fontWeight: FontWeight.w700),
+                        style: TypographyStyle.bodySmall.copyWith(
+                            fontSize: 20.sp, fontWeight: FontWeight.w700),
                       ),
                       SizedBox(
                         height: 0.005.sh,
                       ),
                       Text(
                         "${staffDataProvider.user['phone_number']}",
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w400),
+                        style: TypographyStyle.bodySmall.copyWith(
+                            fontSize: 11.sp, fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
@@ -138,123 +138,27 @@ class _VendorHomeState extends State<StaffHomePage> {
                 crossAxisCount: 4,
                 mainAxisSpacing: 10,
                 childAspectRatio: 0.7,
-                children: [
-                  serviceWidget(
-                      PhosphorIcons.magnifying_glass, "Find\nRequest"),
-                  // serviceWidget(PhosphorIcons.bank, "My\nCompany"),
-                  serviceWidget(PhosphorIcons.lifebuoy, "Contact\nSupport"),
-                  // serviceWidget(
-                  //     PhosphorIcons.chart_line_up, "Analytics\nGraph"),
+                children: const [
+                  HomeCubeButton(
+                    title: 'Find\nRequest',
+                    icon: PhosphorIcons.magnifying_glass,
+                    child: FindRequest(),
+                  ),
+                  // HomeCubeButton(
+                  //   title: 'Sales\nHistory',
+                  //   icon: PhosphorIcons.chart_bar,
+                  //   child: RequestHistory(),
+                  // ),
+                  HomeCubeButton(
+                    title: 'Contact\nSupport',
+                    icon: PhosphorIcons.lifebuoy,
+                    child: SupportPage(),
+                  ),
                 ],
               ),
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Column serviceWidget(IconData icon, String name) {
-    return Column(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () async {
-              switch (name) {
-                case 'Find\nRequest':
-                  await showMaterialModalBottomSheet(
-                    context: context,
-                    expand: false,
-                    isDismissible: false,
-                    enableDrag: false,
-                    //elevation: 10,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => const StaffSearchRequest(),
-                  );
-                  break;
-                case 'Contact\nSupport':
-                  showMaterialModalBottomSheet(
-                    context: context,
-                    expand: false,
-                    isDismissible: false,
-                    enableDrag: false,
-                    //elevation: 10,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => const StaffSupportPage(),
-                  );
-                  break;
-                default:
-                  break;
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.all(0.010.sw),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                color: UIColors.primary600.withOpacity(.4),
-              ),
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.all(0.058.sw),
-                  child: Icon(icon),
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 0.005.sh,
-        ),
-        Text(
-          name,
-          style: TypographyStyle.bodyMediumn.copyWith(
-            fontSize: 14.sp,
-          ),
-          textAlign: TextAlign.center,
-        )
-      ],
-    );
-  }
-
-  Container avatarWidget(String img, String name) {
-    return Container(
-      margin: EdgeInsets.only(right: 0.034.sw),
-      height: 0.150.sh,
-      width: 0.250.sw,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              15.r,
-            ),
-          ),
-          color: UIColors.primary600.withOpacity(.4)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            height: 0.06.sh,
-            width: 0.06.sh,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/$img.png'),
-                  fit: BoxFit.contain,
-                ),
-                border: Border.all(
-                  color: UIColors.secondary600,
-                  width: 0.0001.sh,
-                )),
-          ),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontFamily: 'CW BR Firma',
-              fontWeight: FontWeight.w700,
-            ),
-          )
-        ],
       ),
     );
   }

@@ -13,14 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class StaffSearchRequest extends StatefulWidget {
-  const StaffSearchRequest({Key key}) : super(key: key);
+class FindRequest extends StatefulWidget {
+  const FindRequest({Key key}) : super(key: key);
 
   @override
-  State<StaffSearchRequest> createState() => _RequestChannelsScreenState();
+  State<FindRequest> createState() => _RequestChannelsScreenState();
 }
 
-class _RequestChannelsScreenState extends State<StaffSearchRequest> {
+class _RequestChannelsScreenState extends State<FindRequest> {
   StaffDataProvider staffDataProvider;
 
   bool _isLoading = false;
@@ -78,10 +78,8 @@ class _RequestChannelsScreenState extends State<StaffSearchRequest> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        FormHeader(
+                        const FormHeader(
                           title: 'Find Request',
-                          hasCustomTitleSize: true,
-                          titleFontSize: 23.sp,
                           description:
                               'Enter the request code sent to the customer.',
                         ),

@@ -74,10 +74,8 @@ class _RequestChannelsScreenState extends State<StaffPumpSalesSnapshot> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FormHeader(
+                          const FormHeader(
                             title: 'Sales Confirmation',
-                            hasCustomTitleSize: true,
-                            titleFontSize: 23.sp,
                             description: 'Take a picture of your pump meter.',
                           ),
 
