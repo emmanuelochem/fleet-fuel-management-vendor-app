@@ -13,6 +13,4 @@ void main() {
     child: StaffMain(),
   );
   runApp(vStaffApp);
-  //runApp(vendorApp);
-  //runApp(vStaffApp);
 }

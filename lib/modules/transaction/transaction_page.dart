@@ -1,12 +1,15 @@
 import 'package:ceuk_user_app/core/constants/app_constant.dart';
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
+import 'package:ceuk_user_app/core/logics/generalLogics.dart';
 import 'package:ceuk_user_app/modules/transaction/staff_transaction_api.dart';
+import 'package:ceuk_user_app/modules/transaction/transaction_details.dart';
 import 'package:ceuk_user_app/shared/form/empty_data_notice.dart';
 import 'package:ceuk_user_app/shared/widgets/general_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class StaffTransactionPage extends StatefulWidget {
   const StaffTransactionPage({Key key}) : super(key: key);
@@ -89,11 +92,10 @@ class _ManageMessengersState extends State<StaffTransactionPage> {
                               height: 0.016.sh,
                             ),
                             Container(
-                              // height: 1.sh,
+                              height: 1.sh,
                               padding:
                                   EdgeInsets.symmetric(horizontal: 0.058.sw),
                               child: ListView.builder(
-                                shrinkWrap: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: vendorData.length,
                                 itemBuilder: (context, index) {
@@ -118,16 +120,16 @@ class Transaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // showMaterialModalBottomSheet(
-        //   context: context,
-        //   expand: false,
-        //   isDismissible: false,
-        //   enableDrag: false,
-        //   //elevation: 10,
-        //   backgroundColor: Colors.transparent,
-        //   builder: (context) =>
-        //       VendorsTransactionDetailsScreen(history: transaction),
-        // );
+        showMaterialModalBottomSheet(
+          context: context,
+          expand: false,
+          isDismissible: false,
+          enableDrag: false,
+          //elevation: 10,
+          backgroundColor: Colors.transparent,
+          builder: (context) =>
+              UserTransactionDetailsScreen(history: transaction),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 0.01.sh),
@@ -184,17 +186,21 @@ class Transaction extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        transaction['type'] == 'credit'
-                            ? 'Wallet funding'
-                            : transaction['description'],
-                        style: TypographyStyle.bodySmall.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 14.sp),
+                      Expanded(
+                        child: Text(
+                          transaction['type'] == 'credit'
+                              ? 'Wallet funding'
+                              : transaction['description'],
+                          overflow: TextOverflow.ellipsis,
+                          style: TypographyStyle.bodySmall.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 13.sp),
+                        ),
                       ),
                       Text(
-                        "NGN ${transaction['amount']}",
+                        GeneralLogics.formatCurrency(
+                            transaction['amount'].toString()),
                         style: TypographyStyle.bodySmall.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 13.sp),
+                            fontWeight: FontWeight.bold, fontSize: 12.sp),
                       ),
                     ],
                   ),
@@ -205,7 +211,7 @@ class Transaction extends StatelessWidget {
                         " ${AppConstant.formatDate.format(DateTime.parse(transaction['created_at']))}",
                         style: TypographyStyle.bodySmall.copyWith(
                           color: UIColors.secondary300,
-                          fontSize: 12.sp,
+                          fontSize: 11.sp,
                         ),
                       ),
                       Text(
@@ -224,7 +230,7 @@ class Transaction extends StatelessWidget {
                                         : transaction['type'],
                         style: TypographyStyle.bodySmall.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                          fontSize: 11.sp,
                           color: (transaction['type'] == 'credit' &&
                                   transaction['status'] == 'success')
                               ? Colors.green

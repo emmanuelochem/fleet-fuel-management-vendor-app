@@ -1,4 +1,5 @@
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
+import 'package:ceuk_user_app/core/logics/generalLogics.dart';
 import 'package:ceuk_user_app/shared/widgets/actionable_option_list_tile.dart';
 import 'package:ceuk_user_app/shared/widgets/general_appbar.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ class _SupportPageState extends State<SupportPage> {
                       // final Uri _phoneLaunchUri =
                       //     Uri(scheme: 'tel', path: '+2347002566663');
                       // GeneralLogics.openExternalLink(_phoneLaunchUri);
-                      // GeneralLogics.launchURL('tel:+23470025666639');
+                      GeneralLogics.launchURL('tel:+23470025666639');
                     }),
                     child: ActionableOptionListTile(
                       title: 'Call us (8am to 7pm - Mon to Fri)',
@@ -83,10 +84,10 @@ class _SupportPageState extends State<SupportPage> {
                   ),
                   GestureDetector(
                     onTap: (() {
-                      // final Uri emailLaunchUri = Uri(
-                      //     scheme: 'mailto', path: 'contact@tyms.africa');
+                      final Uri emailLaunchUri =
+                          Uri(scheme: 'mailto', path: 'contact@tyms.africa');
 
-                      // _launchURL(emailLaunchUri.toString());
+                      _launchURL(emailLaunchUri.toString());
                     }),
                     child: ActionableOptionListTile(
                       title: 'Send us an email (24/7)',
@@ -124,8 +125,8 @@ class _SupportPageState extends State<SupportPage> {
                   // ),
                   GestureDetector(
                     onTap: (() {
-                      // GeneralLogics.launchURL(
-                      //     'https://twitter.com/tymsafrica');
+                      GeneralLogics.launchURL(
+                          'https://twitter.com/ceucenergiesltd');
                     }),
                     child: ActionableOptionListTile(
                       title: 'Twitter',

@@ -1,5 +1,5 @@
 //Switch Environment
-bool isLive = true;
+bool isLive = false;
 
 //Live url here
 String liveUrl = 'https://api.ceucenergies.com/api/v1/';
