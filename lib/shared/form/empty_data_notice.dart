@@ -27,7 +27,7 @@ class EmptyDataNotice extends StatelessWidget {
               children: [
                 Icon(
                   icon ?? PhosphorIcons.x,
-                  size: 0.33.sw,
+                  size: 0.30.sw,
                   color: UIColors.secondary300,
                 ),
                 SizedBox(
@@ -36,7 +36,7 @@ class EmptyDataNotice extends StatelessWidget {
                 Text(message,
                     textAlign: TextAlign.center,
                     style: TypographyStyle.bodyMediumn.copyWith(
-                        fontSize: 17.sp, color: UIColors.secondary300))
+                        fontSize: 15.sp, color: UIColors.secondary300))
               ],
             ),
           ),

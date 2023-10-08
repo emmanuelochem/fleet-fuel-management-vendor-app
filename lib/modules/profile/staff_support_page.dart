@@ -72,7 +72,7 @@ class _SupportPageState extends State<SupportPage> {
                       // final Uri _phoneLaunchUri =
                       //     Uri(scheme: 'tel', path: '+2347002566663');
                       // GeneralLogics.openExternalLink(_phoneLaunchUri);
-                      GeneralLogics.launchURL('tel:+23470025666639');
+                      GeneralLogics.launchURL('tel:+2349097777026');
                     }),
                     child: ActionableOptionListTile(
                       title: 'Call us (8am to 7pm - Mon to Fri)',
@@ -84,8 +84,8 @@ class _SupportPageState extends State<SupportPage> {
                   ),
                   GestureDetector(
                     onTap: (() {
-                      final Uri emailLaunchUri =
-                          Uri(scheme: 'mailto', path: 'contact@tyms.africa');
+                      final Uri emailLaunchUri = Uri(
+                          scheme: 'mailto', path: 'ceucenergiesng@gmail.com');
 
                       _launchURL(emailLaunchUri.toString());
                     }),

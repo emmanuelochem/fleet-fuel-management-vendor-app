@@ -78,7 +78,7 @@ class _MyAccountPageState extends State<VendorStaffAccount> {
                             fontSize: 12.sp,
                             color: UIColors.secondary300,
                           )),
-                      Text('Staff',
+                      Text('Attendant',
                           style: TypographyStyle.bodySmall.copyWith(
                             fontSize: 11.sp,
                             color: UIColors.secondary300,
@@ -133,7 +133,7 @@ class _MyAccountPageState extends State<VendorStaffAccount> {
                 ],
               ),
             ),
-            Text('CeucEnergies © 2023',
+            Text('CeucEnergies © ${DateTime.now().year}',
                 style: TypographyStyle.bodySmall.copyWith(
                   fontSize: 12.sp,
                   color: UIColors.secondary300,

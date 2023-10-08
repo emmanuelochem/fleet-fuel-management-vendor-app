@@ -16,7 +16,7 @@ class StaffMain extends StatelessWidget {
         builder: (theme, darkTheme) {
           return MaterialApp(
             navigatorKey: _navigatorKey,
-            title: 'CeukEnergy',
+            title: 'Ceuc Attendant',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
                 visualDensity: VisualDensity.adaptivePlatformDensity,
