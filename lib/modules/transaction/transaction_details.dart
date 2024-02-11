@@ -4,6 +4,7 @@ import 'package:ceuk_user_app/core/constants/app_constant.dart';
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
 import 'package:ceuk_user_app/shared/form/form_header.dart';
+import 'package:ceuk_user_app/shared/widgets/summary_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recase/recase.dart';
@@ -74,7 +75,7 @@ class UserTransactionDetailsScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Request',
                                   description: ReCase(
                                           history['type'] == 'credit'
@@ -83,35 +84,36 @@ class UserTransactionDetailsScreen extends StatelessWidget {
                                       .sentenceCase,
                                   showBorder: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Amount',
                                   description: 'NGN ${history['amount']}',
                                   showBorder: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Status',
                                   description:
                                       ReCase(history['status']).sentenceCase,
                                   showBorder: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Channel',
                                   description:
                                       ReCase(history['channel']).sentenceCase,
                                   showBorder: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Reference',
                                   description: history['reference'],
                                   showBorder: true,
+                                  copy: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Description',
                                   description:
                                       '${history['description'] ?? '---'}',
                                   showBorder: true,
                                 ),
-                                requestSummary(
+                                SummaryTile(
                                   title: 'Date',
                                   description:
                                       '${AppConstant.formatDate.format(DateTime.parse(history['created_at']))} -  ${AppConstant.formatTime.format(DateTime.parse(history['created_at']))}',
@@ -128,44 +130,6 @@ class UserTransactionDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Container requestSummary(
-      {String title = 'Title',
-      String description = 'Description',
-      bool showBorder = true}) {
-    return Container(
-      width: 1.sw,
-      padding: EdgeInsets.symmetric(
-        horizontal: 0.042.sw,
-        vertical: 0.017.sh,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: (showBorder) ? 1 : 0,
-            color: UIColors.secondary500,
-          ),
-        ),
-      ),
-      child: RichText(
-        textAlign: TextAlign.start,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$title: ',
-              style: TypographyStyle.bodySmall
-                  .copyWith(color: UIColors.secondary200),
-            ),
-            TextSpan(
-              text: description,
-              style: TypographyStyle.bodySmall
-                  .copyWith(color: UIColors.secondary200),
-            ),
-          ],
         ),
       ),
     );

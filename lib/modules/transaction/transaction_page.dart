@@ -59,7 +59,7 @@ class _ManageMessengersState extends State<StaffTransactionPage> {
       backgroundColor: UIColors.secondary600,
       appBar: const GeneralAppBar(
         title: 'Transactions',
-        leading: false,
+        leading: true,
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List>(

@@ -123,8 +123,7 @@ class _RequestChannelsScreenState extends State<StaffPumpSalesSnapshot> {
                           SizedBox(height: 0.05.sh),
                           GestureDetector(
                             onTap: () async {
-                              var photo =
-                                  await GeneralLogics.getGalleryPicture();
+                              var photo = await GeneralLogics.galleryPicture();
                               setState(() {
                                 pumpImage = photo;
                               });

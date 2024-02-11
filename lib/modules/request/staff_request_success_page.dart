@@ -1,5 +1,6 @@
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
+import 'package:ceuk_user_app/shared/widgets/summary_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -76,38 +77,27 @@ class StaffRequestSuccessPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      requestSummary(
-                        title: 'Request type',
-                        description: data['data']['type'] == 'errander'
-                            ? ReCase('messenger').sentenceCase
-                            : ReCase(data['data']['type']).sentenceCase,
-                        showBorder: true,
-                      ),
-                      requestSummary(
-                        title: 'Request Code',
-                        description: data['data']['code'],
-                        showBorder: true,
-                      ),
-                      requestSummary(
+                      SummaryTile(
                         title: 'Date',
                         description: data['data']['date'],
                         showBorder: true,
                       ),
-                      requestSummary(
+                      SummaryTile(
                         title: 'Time',
                         description: data['data']['time'],
                         showBorder: true,
                       ),
-                      requestSummary(
+                      SummaryTile(
                         title: 'Status',
                         description:
                             ReCase(data['data']['status']).sentenceCase,
                         showBorder: true,
                       ),
-                      requestSummary(
+                      SummaryTile(
                         title: 'Reference',
                         description: data['data']['reference'],
                         showBorder: false,
+                        copy: true,
                       ),
                     ],
                   ),
@@ -119,43 +109,5 @@ class StaffRequestSuccessPage extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  Container requestSummary(
-      {String title = 'Title',
-      String description = 'Description',
-      bool showBorder = true}) {
-    return Container(
-      width: 1.sw,
-      padding: EdgeInsets.symmetric(
-        horizontal: 0.042.sw,
-        vertical: 0.017.sh,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: (showBorder) ? 1 : 0,
-            color: UIColors.secondary500,
-          ),
-        ),
-      ),
-      child: RichText(
-        textAlign: TextAlign.start,
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$title: ',
-              style: TypographyStyle.bodySmall
-                  .copyWith(color: UIColors.secondary200),
-            ),
-            TextSpan(
-              text: description,
-              style: TypographyStyle.bodySmall
-                  .copyWith(color: UIColors.secondary200),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -33,11 +33,11 @@ class StaffsRoutes {
         return MaterialPageRoute(builder: (_) => const StaffHomePage());
 
       case requestDetails:
-        final Map args = settings.arguments as Map;
-        return MaterialPageRoute(
-            builder: (_) => RequestDetailsPage(
-                  requestData: args['requestData'],
-                ));
+      // final Map args = settings.arguments as Map;
+      // return MaterialPageRoute(
+      //     builder: (_) => RequestDetailsPage(
+      //           requestData: args['requestData'],
+      //         ));
 
       default:
         return MaterialPageRoute(

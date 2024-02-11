@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:ceuk_user_app/core/constants/app_constant.dart';
@@ -16,6 +17,8 @@ class HistoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bankData = jsonDecode(history['fund_recipients']);
+    var otherData = jsonDecode(history['fund_recipients']);
     return ClipRect(
       clipBehavior: Clip.hardEdge,
       child: BackdropFilter(
@@ -75,31 +78,24 @@ class HistoryDetailScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 requestSummary(
-                                  title: 'Request type',
-                                  description: ReCase(
-                                          history['type'] == 'vehicle'
-                                              ? history['type']
-                                              : 'Messenger')
-                                      .sentenceCase,
+                                  title: 'Recipient Name',
+                                  description: (bankData['account_name']),
                                   showBorder: true,
                                 ),
                                 requestSummary(
-                                  title:
-                                      '${history['type'] == 'vehicle' ? 'Driver' : 'Messenger'} Name',
-                                  description: history['type'] == 'vehicle'
-                                      ? history['requestable']['driver_name']
-                                      : '${history['requestable']['first_name']} ${history['requestable']['last_name']}',
+                                  title: 'Recipient Account',
+                                  description: (bankData['account_number']),
+                                  showBorder: true,
+                                ),
+                                requestSummary(
+                                  title: 'Recipient Bank',
+                                  description: (bankData['account_name']),
                                   showBorder: true,
                                 ),
                                 requestSummary(
                                   title: 'Amount',
                                   description: GeneralLogics.formatCurrency(
                                       history['amount'].toString()),
-                                  showBorder: true,
-                                ),
-                                requestSummary(
-                                  title: 'Request Code',
-                                  description: history['code'],
                                   showBorder: true,
                                 ),
                                 requestSummary(
@@ -118,24 +114,6 @@ class HistoryDetailScreen extends StatelessWidget {
                                   title: 'Note',
                                   description: history['description'] ?? 'NILL',
                                   showBorder: true,
-                                ),
-                                requestSummary(
-                                  title: 'Vendor',
-                                  description:
-                                      '${history['vendor'] != null ? history['vendor']['company_name'] : 'Not matched'}',
-                                  showBorder: false,
-                                ),
-                                requestSummary(
-                                  title: 'Vendor Phone',
-                                  description:
-                                      '${history['vendor'] != null ? history['vendor']['manager_phone'] : 'Not matched'}',
-                                  showBorder: false,
-                                ),
-                                requestSummary(
-                                  title: 'Vendor Staff',
-                                  description:
-                                      '${history['vendor_staff'] != null ? history['vendor_staff']['first_name'] + ' ' + history['vendor_staff']['last_name'] : 'Not matched'}',
-                                  showBorder: false,
                                 ),
                               ],
                             ),

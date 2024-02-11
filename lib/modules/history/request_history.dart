@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:recase/recase.dart';
 
 class RequestHistory extends StatefulWidget {
   const RequestHistory({Key key}) : super(key: key);
@@ -26,9 +25,9 @@ class _ManageMessengersState extends State<RequestHistory> {
     setState(() {
       isLoaded = false;
     });
-    UserRequestApi vendorsBankApi = UserRequestApi();
+    RequestApi vendorsBankApi = RequestApi();
     var res = await vendorsBankApi
-        .getAllRequests(
+        .getRequests(
       context: context,
     )
         .then((value) {
@@ -172,9 +171,7 @@ class Transaction extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        history['type'] == 'vehicle'
-                            ? history['requestable']['driver_name']
-                            : '${history['requestable']['first_name']} ${history['requestable']['last_name']}',
+                        history['product']['name'] + ' Request',
                         style: TypographyStyle.bodySmall.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 14.sp),
                       ),
@@ -190,7 +187,7 @@ class Transaction extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "${ReCase(history['type'] == 'vehicle' ? history['type'] : 'Messenger').sentenceCase} - ${AppConstant.formatDate.format(DateTime.parse(history['created_at']))}",
+                        " ${AppConstant.formatDate.format(DateTime.parse(history['created_at']))}",
                         style: TypographyStyle.bodySmall.copyWith(
                           color: UIColors.secondary300,
                           fontSize: 12.sp,

@@ -2,6 +2,7 @@ import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
 import 'package:ceuk_user_app/core/design_system/typography_style.dart';
 import 'package:ceuk_user_app/core/logics/generalLogics.dart';
 import 'package:ceuk_user_app/modules/request/staff_pump_snapshot.dart';
+import 'package:ceuk_user_app/modules/request/staff_request_api.dart';
 import 'package:ceuk_user_app/shared/form/action_button.dart';
 import 'package:ceuk_user_app/shared/form/empty_data_notice.dart';
 import 'package:ceuk_user_app/shared/widgets/general_appbar.dart';
@@ -14,9 +15,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:recase/recase.dart';
 
 class RequestDetailsPage extends StatefulWidget {
-  const RequestDetailsPage({Key key, @required this.requestData})
+  const RequestDetailsPage({Key key, @required this.requestId})
       : super(key: key);
-  final Map<String, dynamic> requestData;
+  final int requestId;
 
   @override
   _RequestDetailsPageState createState() => _RequestDetailsPageState();
@@ -25,27 +26,26 @@ class RequestDetailsPage extends StatefulWidget {
 class _RequestDetailsPageState extends State<RequestDetailsPage> {
   final bool _isLoading = false;
   bool isLoaded = false;
-  Map appointmentMapData;
+  Map<String, dynamic> requestData;
   Future<Map> getAppointment() async {
     setState(() {
       isLoaded = false;
     });
-    // AppointmentApi appointmentApi = AppointmentApi();
-    // var res = await appointmentApi
-    //     .getAppointmentById(
-    //         context: context, appointmentId: widget.appointmentId)
-    //     .then((value) {
-    //   if (value != null) {
-    //     setState(() {
-    //       isLoaded = true;
-    //       appointmentMapData = value['data'];
-    //     });
-    //     return value['data'];
-    //   } else {
-    //     return null;
-    //   }
-    // });
-    // return res;
+    StaffsRequestApi staffsRequestApi = StaffsRequestApi();
+    var res = await staffsRequestApi
+        .findRequestById(context: context, code: widget.requestId.toString())
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          isLoaded = true;
+          requestData = value['data'];
+        });
+        return value['data'];
+      } else {
+        return null;
+      }
+    });
+    return res;
   }
 
   Future<Map> futureData;
@@ -53,7 +53,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //futureData = getAppointment();
+    futureData = getAppointment();
   }
 
   @override
@@ -117,14 +117,13 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                         color: UIColors.secondary600,
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: NetworkImage(widget
-                                                        .requestData['type'] ==
+                                            image: NetworkImage(appointmentData[
+                                                        'type'] ==
                                                     'vehicle'
-                                                ? widget.requestData[
-                                                        'requestable']
+                                                ? appointmentData['requestable']
                                                     ['vehicle_image']
-                                                : widget.requestData[
-                                                    'requestable']['image']))),
+                                                : appointmentData['requestable']
+                                                    ['image']))),
                                   ),
                                   SizedBox(
                                     height: 0.013.sw,
@@ -135,12 +134,12 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        widget.requestData['type'] == 'vehicle'
-                                            ? ReCase(widget.requestData[
+                                        appointmentData['type'] == 'vehicle'
+                                            ? ReCase(appointmentData[
                                                         'requestable']
                                                     ['driver_name'])
                                                 .sentenceCase
-                                            : '${ReCase(widget.requestData['requestable']['first_name']).sentenceCase} ${ReCase(widget.requestData['requestable']['last_name']).sentenceCase}',
+                                            : '${ReCase(appointmentData['requestable']['first_name']).sentenceCase} ${ReCase(appointmentData['requestable']['last_name']).sentenceCase}',
                                         style: TypographyStyle.heading5
                                             .copyWith(
                                                 color: UIColors.secondary200,
@@ -151,7 +150,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                         height: 0.001.sh,
                                       ),
                                       Text(
-                                        widget.requestData['type'] == 'errander'
+                                        appointmentData['type'] == 'errander'
                                             ? 'Messenger'
                                             : 'Vehicle Driver',
                                         style: TypographyStyle.bodySmall
@@ -176,7 +175,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                       child: DoctorInfoBlock(
                                         title: 'Amount',
                                         desc: GeneralLogics.formatCurrency(
-                                            widget.requestData['amount']
+                                            appointmentData['amount']
                                                 .toString()),
                                         icon: PhosphorIcons.currency_ngn,
                                       ),
@@ -185,7 +184,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                       child: DoctorInfoBlock(
                                         title: 'Product',
                                         desc:
-                                            '${widget.requestData['product']['name']}',
+                                            '${appointmentData['product']['name']}',
                                         icon: PhosphorIcons.gas_pump,
                                       ),
                                     ),
@@ -196,15 +195,14 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                     Expanded(
                                       child: DoctorInfoBlock(
                                         title: 'Status',
-                                        desc: '${widget.requestData['status']}',
+                                        desc: '${appointmentData['status']}',
                                         icon: PhosphorIcons.timer,
                                       ),
                                     ),
                                     Expanded(
                                       child: DoctorInfoBlock(
                                         title: 'Reference',
-                                        desc:
-                                            '${widget.requestData['reference']}',
+                                        desc: '${appointmentData['reference']}',
                                         icon: PhosphorIcons.receipt,
                                       ),
                                     ),
@@ -215,10 +213,10 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                     Expanded(
                                       child: DoctorInfoBlock(
                                         title: 'Plate Number.',
-                                        desc: widget.requestData['type'] ==
+                                        desc: appointmentData['type'] ==
                                                 'errander'
                                             ? ''
-                                            : widget.requestData['requestable']
+                                            : appointmentData['requestable']
                                                 ['plate_number'],
                                         icon: PhosphorIcons.barcode,
                                       ),
@@ -226,10 +224,10 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                     Expanded(
                                       child: DoctorInfoBlock(
                                         title: 'Vehicle Model',
-                                        desc: widget.requestData['type'] ==
+                                        desc: appointmentData['type'] ==
                                                 'errander'
                                             ? ''
-                                            : widget.requestData['requestable']
+                                            : appointmentData['requestable']
                                                 ['model'],
                                         icon: PhosphorIcons.car,
                                       ),
@@ -242,7 +240,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                       child: DoctorInfoBlock(
                                         title: 'Business Name',
                                         desc:
-                                            '${widget.requestData['user']['first_name'] + ' ' + widget.requestData['user']['last_name']}',
+                                            '${appointmentData['user']['first_name'] + ' ' + appointmentData['user']['last_name']}',
                                         icon: PhosphorIcons.user,
                                       ),
                                     ),
@@ -250,7 +248,7 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                       child: DoctorInfoBlock(
                                         title: 'Business Email',
                                         desc:
-                                            '${widget.requestData['user']['email']}',
+                                            '${appointmentData['user']['email']}',
                                         icon: PhosphorIcons.envelope,
                                       ),
                                     ),
@@ -262,22 +260,22 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                       child: DoctorInfoBlock(
                                         title: 'Business Contact',
                                         desc:
-                                            '${widget.requestData['user']['phone_number']}',
+                                            '${appointmentData['user']['phone_number']}',
                                         icon: PhosphorIcons.phone,
                                       ),
                                     ),
                                     Expanded(
                                       child: DoctorInfoBlock(
-                                        title: widget.requestData['type'] ==
+                                        title: appointmentData['type'] ==
                                                 'errander'
                                             ? 'Messenger Contact'
                                             : 'Driver Contact',
-                                        desc: widget.requestData['type'] ==
-                                                'vehicle'
-                                            ? widget.requestData['requestable']
-                                                ['driver_phone_number']
-                                            : widget.requestData['requestable']
-                                                ['phone_number'],
+                                        desc:
+                                            appointmentData['type'] == 'vehicle'
+                                                ? appointmentData['requestable']
+                                                    ['driver_phone_number']
+                                                : appointmentData['requestable']
+                                                    ['phone_number'],
                                         icon: PhosphorIcons.envelope,
                                       ),
                                     ),
@@ -286,13 +284,12 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                               ],
                             ),
                             SizedBox(
-                              height: widget.requestData['status'] == 'approved'
-                                  ? 0
-                                  : 0.026.sh,
+                              height: appointmentData['status'] == 'pending'
+                                  ? 0.026.sh
+                                  : 0,
                             ),
-                            widget.requestData['status'] == 'approved'
-                                ? const SizedBox()
-                                : ActionButton(
+                            appointmentData['status'] == 'pending'
+                                ? ActionButton(
                                     isLoading: _isLoading,
                                     text: 'Confirm Request',
                                     backgroundColor: UIColors.primary,
@@ -308,15 +305,16 @@ class _RequestDetailsPageState extends State<RequestDetailsPage> {
                                         backgroundColor: Colors.transparent,
                                         builder: (context) =>
                                             StaffPumpSalesSnapshot(
-                                          requestId: widget.requestData['id']
-                                              .toString(),
+                                          requestId:
+                                              appointmentData['id'].toString(),
                                         ),
                                       ).then((value) {
                                         //futureData = getBanks();
                                         // setState(() {});
                                       });
                                     },
-                                  ),
+                                  )
+                                : const SizedBox()
                           ],
                         ),
                       );

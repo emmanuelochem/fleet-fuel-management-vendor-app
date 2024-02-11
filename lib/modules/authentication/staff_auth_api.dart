@@ -5,7 +5,7 @@ class StaffsAuthApi extends NetworkHandler {
   Future<Map> getStaffData({
     BuildContext context,
   }) async {
-    String route = 'staff/auth';
+    String route = 'errander/auth';
     Map<String, dynamic> header = {};
     return await httpGet(
       route: route,
@@ -19,7 +19,7 @@ class StaffsAuthApi extends NetworkHandler {
 
   Future<Map> loginStaff(
       {Map<String, dynamic> data, BuildContext context}) async {
-    String route = 'staff/login';
+    String route = 'errander/login';
     Map<String, dynamic> header = {};
     return await httpPost(
       route: route,

@@ -25,7 +25,7 @@ class GeneralLogics {
     }
   }
 
-  static Future<File> getGalleryPicture() async {
+  static Future<File> galleryPicture() async {
     final ImagePicker picker = ImagePicker();
 // Pick an image.
     final XFile image = await picker.pickImage(source: ImageSource.gallery);

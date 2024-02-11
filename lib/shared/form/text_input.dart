@@ -4,6 +4,8 @@ import 'package:ceuk_user_app/core/design_system/typography_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum InputType { underline, border, none }
+
 class TextInputField extends StatefulWidget {
   TextInputField({
     Key key,
@@ -30,6 +32,7 @@ class TextInputField extends StatefulWidget {
     this.hintFontSize,
     this.hintFontWeight,
     this.centerCursor = false,
+    this.inputType = InputType.border,
   }) : super(key: key);
 
   final Key fieldKey;
@@ -52,17 +55,17 @@ class TextInputField extends StatefulWidget {
   final bool hasController;
   final TextEditingController textController;
   final Color disabledColor;
-
   final double hintFontSize;
   final FontWeight hintFontWeight;
   final bool centerCursor;
+  final InputType inputType;
 
   @override
   _TextInputFieldState createState() => _TextInputFieldState();
 }
 
 class _TextInputFieldState extends State<TextInputField> {
-  final bool _obscureText = true;
+  //final bool _obscureText = true;
   FocusNode focusNode;
   @override
   void initState() {
@@ -123,11 +126,31 @@ class _TextInputFieldState extends State<TextInputField> {
                     fontSize: widget.hintFontSize ?? 18.sp,
                     fontWeight: widget.hintFontWeight ?? FontWeight.w400),
                 decoration: InputDecoration(
-                  border: FormUI.normal,
-                  focusedBorder: FormUI.focus,
-                  enabledBorder: FormUI.enabled,
-                  errorBorder: FormUI.error,
-                  disabledBorder: FormUI.disabled,
+                  border: (widget.inputType == InputType.none)
+                      ? InputBorder.none
+                      : (widget.inputType == InputType.underline)
+                          ? FormUI.underlineNormal
+                          : FormUI.normal,
+                  focusedBorder: (widget.inputType == InputType.none)
+                      ? InputBorder.none
+                      : (widget.inputType == InputType.underline)
+                          ? FormUI.underlineFocus
+                          : FormUI.focus,
+                  enabledBorder: (widget.inputType == InputType.none)
+                      ? InputBorder.none
+                      : (widget.inputType == InputType.underline)
+                          ? FormUI.underlineEnabled
+                          : FormUI.enabled,
+                  errorBorder: (widget.inputType == InputType.none)
+                      ? InputBorder.none
+                      : (widget.inputType == InputType.underline)
+                          ? FormUI.underlineError
+                          : FormUI.error,
+                  disabledBorder: (widget.inputType == InputType.none)
+                      ? InputBorder.none
+                      : (widget.inputType == InputType.underline)
+                          ? FormUI.underlineDisabled
+                          : FormUI.disabled,
                   hintStyle: TypographyStyle.bodyLarge.copyWith(
                       color: UIColors.secondary300,
                       fontSize: widget.hintFontSize ?? 18.sp,

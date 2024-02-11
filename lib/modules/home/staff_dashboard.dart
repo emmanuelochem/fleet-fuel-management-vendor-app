@@ -1,7 +1,5 @@
 import 'package:ceuk_user_app/core/design_system/color_shemes.dart';
-import 'package:ceuk_user_app/modules/analytics/analytics_page.dart';
 import 'package:ceuk_user_app/modules/home/staff_home.dart';
-import 'package:ceuk_user_app/modules/profile/vstaff_profile.dart';
 import 'package:ceuk_user_app/modules/transaction/transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -19,11 +17,7 @@ class _HomePageState extends State<StaffDashboard> {
 
   static final List<Widget> _tabPages = <Widget>[
     const StaffHomePage(),
-    const AnalyticsPage(),
     const StaffTransactionPage(),
-
-    const VendorStaffAccount(),
-    //Container()
   ];
 
   void _onTabbed(int index) {
@@ -97,7 +91,7 @@ class _HomePageState extends State<StaffDashboard> {
                     padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                      child: const Icon(PhosphorIcons.chart_bar),
+                      child: const Icon(PhosphorIcons.currency_ngn),
                     ),
                   ),
                   activeIcon: Padding(
@@ -105,41 +99,11 @@ class _HomePageState extends State<StaffDashboard> {
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
                       child: const Icon(
-                        PhosphorIcons.chart_bar_fill,
+                        PhosphorIcons.currency_ngn_fill,
                       ),
                     ),
                   ),
-                  label: 'Summary'),
-              BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                    child: const Icon(
-                      PhosphorIcons.currency_ngn,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                    child: const Icon(
-                      PhosphorIcons.currency_ngn_fill,
-                    ),
-                  ),
                   label: 'Transactions'),
-              BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                      child: const Icon(PhosphorIcons.user),
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 0.00.sh, top: 0.00.sh),
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 0.004.sh, top: 0.003.sh),
-                      child: const Icon(PhosphorIcons.user_fill),
-                    ),
-                  ),
-                  label: 'Account')
             ]),
       ),
     );

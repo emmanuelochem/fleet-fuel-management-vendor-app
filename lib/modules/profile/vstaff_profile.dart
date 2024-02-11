@@ -34,7 +34,7 @@ class _MyAccountPageState extends State<VendorStaffAccount> {
       backgroundColor: UIColors.white,
       appBar: const GeneralAppBar(
         title: 'Account',
-        leading: false,
+        leading: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 0.058.sw),

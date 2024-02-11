@@ -61,7 +61,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       backgroundColor: UIColors.secondary600,
       appBar: const GeneralAppBar(
         title: 'Sales Summary',
-        leading: false,
+        leading: true,
       ),
       body: SingleChildScrollView(
         key: UniqueKey(),
@@ -189,7 +189,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     name: 'Total Sales',
                     value: rawPayload.isEmpty
                         ? ''
-                        : rawPayload['metrics']['total_income'].toString(),
+                        : rawPayload['metrics']['total_request'].toString(),
                   ),
                 ]),
           ],

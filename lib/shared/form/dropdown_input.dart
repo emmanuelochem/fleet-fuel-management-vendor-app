@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:recase/recase.dart';
 
 typedef ValueCallback = DropdownModel Function(DropdownModel);
 
@@ -24,6 +23,7 @@ class DropDownInput extends StatefulWidget {
       this.onFieldSubmitted,
       this.fieldTitle,
       this.sideNote,
+      this.sideNoteColor,
       this.footerNote,
       this.footerNoteColor,
       this.footerHighlightNote,
@@ -33,8 +33,7 @@ class DropDownInput extends StatefulWidget {
       @required this.sheetTitle,
       this.showSearch = false,
       this.searchPlaceholder,
-      this.initialValue,
-      this.changeNotifier})
+      this.initialValue})
       : super(key: key);
 
   final Key fieldKey;
@@ -47,6 +46,7 @@ class DropDownInput extends StatefulWidget {
   final ValueChanged<String> onFieldSubmitted;
   final String fieldTitle;
   final String sideNote;
+  final Color sideNoteColor;
   final String footerNote;
   Color footerNoteColor;
   final String footerHighlightNote;
@@ -57,15 +57,15 @@ class DropDownInput extends StatefulWidget {
   final bool showSearch;
   final String searchPlaceholder;
   final String initialValue;
-  final ValueNotifier<DropdownModel> changeNotifier;
 
   @override
   State<DropDownInput> createState() => _DropDownInputState();
 }
 
 class _DropDownInputState extends State<DropDownInput> {
-  FocusNode focusNode;
+  DropdownModel selectedValue;
 
+  FocusNode focusNode;
   @override
   void initState() {
     focusNode = FocusNode();
@@ -74,22 +74,14 @@ class _DropDownInputState extends State<DropDownInput> {
     });
     super.initState();
 
-    //  widget.optionsList = widget.optionsList.toSet().toList();
-
-    // for (var element in widget.optionsList) {
-    //   if (!dataList.contains(element)) {
-    //     dataList.add(element);
-    //   }
-    // }
     autoSelect();
   }
 
-  DropdownModel selectedValue;
-  List<DropdownModel> dataList = [];
   autoSelect() {
-    if (widget.initialValue != null) {
+    if (widget.initialValue != null && widget.initialValue.trim() != '') {
       for (var element in widget.optionsList) {
-        if (element.value.toLowerCase() == widget.initialValue.toLowerCase()) {
+        if (element.value.trim().toLowerCase() ==
+            widget.initialValue.trim().toLowerCase()) {
           selectedValue = element;
         }
       }
@@ -105,192 +97,181 @@ class _DropDownInputState extends State<DropDownInput> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: widget.changeNotifier,
-        builder:
-            (BuildContext context, DropdownModel counterValue, Widget child) {
-          return GestureDetector(
-            onTap: !widget.enabled
-                ? null
-                : () async {
-                    DropdownModel response =
-                        await showMaterialModalBottomSheet<DropdownModel>(
-                      context: context,
-                      expand: false,
-                      isDismissible: false,
-                      enableDrag: false,
-                      //elevation: 10,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => DropdownBottomsheet(
-                        title: widget.sheetTitle.toString(),
-                        optionList: widget.optionsList,
-                        showSearch: widget.showSearch,
-                        searchPlaceholder: widget.searchPlaceholder,
-                      ),
-                    );
-                    if (response != null) {
-                      setState(() {
-                        //selectedValue = response;
-                        widget.changeNotifier.value = response;
-                      });
-                      widget.onSaved(response);
-                    }
-                  },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                widget.fieldTitle == null
-                    ? const SizedBox.shrink()
-                    : Row(
-                        children: [
-                          Text(widget.fieldTitle,
-                              style: TypographyStyle.bodyMediumn
-                                  .copyWith(fontSize: 15.sp)),
-                          widget.sideNote != null
-                              ? Padding(
-                                  padding: EdgeInsets.only(left: 0.012.sw),
-                                  child: Text(widget.sideNote,
-                                      style: TypographyStyle.bodySmall.copyWith(
-                                        color: UIColors.secondary300,
-                                      )),
-                                )
-                              : const SizedBox.shrink(),
-                        ],
-                      ),
-                SizedBox(
-                  height: 0.0055.sh,
+    return GestureDetector(
+      onTap: !widget.enabled
+          ? null
+          : () async {
+              DropdownModel response =
+                  await showMaterialModalBottomSheet<DropdownModel>(
+                context: context,
+                expand: false,
+                isDismissible: false,
+                enableDrag: false,
+                //elevation: 10,
+                backgroundColor: Colors.transparent,
+                builder: (context) => DropdownBottomsheet(
+                  title: widget.sheetTitle.toString(),
+                  optionList: widget.optionsList,
+                  showSearch: widget.showSearch,
+                  searchPlaceholder: widget.searchPlaceholder,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      child: AbsorbPointer(
-                        child: DropdownButtonFormField<DropdownModel>(
-                          // key: widget.fieldKey,
-                          isDense: true,
-                          isExpanded: true,
-                          focusNode: focusNode,
-                          onSaved: widget.onSaved,
-                          validator: widget.validator,
-                          style: TypographyStyle.bodyLarge
-                              .copyWith(color: UIColors.secondary200),
-                          decoration: InputDecoration(
-                            border: FormUI.normal,
-                            focusedBorder: FormUI.focus,
-                            enabledBorder: FormUI.enabled,
-                            errorBorder: FormUI.error,
-                            disabledBorder: FormUI.disabled,
-                            hintStyle: TypographyStyle.bodyLarge
-                                .copyWith(color: UIColors.secondary300),
-                            helperStyle: TypographyStyle.bodySmall.copyWith(
-                                color: UIColors.secondary300, fontSize: 15.sp),
-                            filled: true,
-                            fillColor: !widget.enabled
-                                ? UIColors.secondary500
-                                : focusNode.hasFocus
-                                    ? UIColors.white
-                                    : UIColors.secondary600,
-                            isDense: true,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 0.049.sw, vertical: 0.018.sh),
-                            hintText: widget.hintText,
-                            labelText: widget.labelText,
-                            helperText: widget.helperText,
-                          ),
-                          elevation: 0,
-                          value: counterValue,
-                          onChanged: (DropdownModel newValue) =>
-                              setState(() => selectedValue = newValue),
-                          items: widget.optionsList
-                              .map<DropdownMenuItem<DropdownModel>>(
-                                  (DropdownModel value) =>
-                                      DropdownMenuItem<DropdownModel>(
-                                        value: value,
-                                        child: Row(
-                                          children: [
-                                            value.icon != null
-                                                ? Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 0.024.sw),
-                                                    child: Image.asset(
-                                                      value.icon,
-                                                      height: 0.025.sh,
-                                                      width: 0.025.sh,
-                                                    ),
-                                                  )
-                                                : const SizedBox.shrink(),
-                                            Text(
-                                              ReCase(value.name.toString())
-                                                  .sentenceCase,
-                                              softWrap: true,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TypographyStyle.bodySmall
-                                                  .copyWith(
-                                                      color:
-                                                          UIColors.secondary100,
-                                                      fontSize: 15.sp),
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                              .toList(),
-                          icon: Icon(PhosphorIcons.caret_down,
-                              size: 0.024.sh, color: UIColors.secondary300),
-                          iconSize: 23.sp,
-                        ),
-                      ),
-                    ),
-
-                    //
-                    widget.footerNote != null
-                        ? Column(
-                            children: [
-                              SizedBox(
-                                height: 0.001.sh,
-                              ),
-                              RichText(
-                                textAlign: TextAlign.start,
-                                text: TextSpan(
+              );
+              if (response != null) {
+                setState(() {
+                  selectedValue = response;
+                });
+                widget.onSaved(response);
+              }
+            },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              widget.fieldTitle == null
+                  ? const SizedBox()
+                  : Text(widget.fieldTitle,
+                      style: TypographyStyle.bodyMediumn
+                          .copyWith(fontSize: 15.sp)),
+              widget.sideNote != null
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 0.012.sw),
+                      child: Text(widget.sideNote,
+                          style: TypographyStyle.bodySmall.copyWith(
+                            color:
+                                widget.sideNoteColor ?? UIColors.secondary300,
+                          )),
+                    )
+                  : const SizedBox.shrink(),
+            ],
+          ),
+          SizedBox(
+            height: 0.0055.sh,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AbsorbPointer(
+                child: DropdownButtonFormField<DropdownModel>(
+                  isDense: true,
+                  isExpanded: true,
+                  focusNode: focusNode,
+                  onSaved: widget.onSaved,
+                  validator: widget.validator,
+                  style: TypographyStyle.bodyLarge
+                      .copyWith(color: UIColors.secondary200),
+                  decoration: InputDecoration(
+                    border: FormUI.normal,
+                    focusedBorder: FormUI.focus,
+                    enabledBorder: FormUI.enabled,
+                    errorBorder: FormUI.error,
+                    disabledBorder: FormUI.disabled,
+                    hintStyle: TypographyStyle.bodyLarge
+                        .copyWith(color: UIColors.secondary300),
+                    helperStyle: TypographyStyle.bodySmall.copyWith(
+                        color: UIColors.secondary300, fontSize: 15.sp),
+                    filled: true,
+                    fillColor: !widget.enabled
+                        ? UIColors.secondary500
+                        : focusNode.hasFocus
+                            ? UIColors.white
+                            : UIColors.secondary600,
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 0.049.sw, vertical: 0.018.sh),
+                    hintText: widget.hintText,
+                    labelText: widget.labelText,
+                    helperText: widget.helperText,
+                  ),
+                  elevation: 0,
+                  value: selectedValue,
+                  onChanged: (DropdownModel newValue) =>
+                      setState(() => selectedValue = newValue),
+                  items: widget.optionsList
+                      .map<DropdownMenuItem<DropdownModel>>(
+                          (DropdownModel value) =>
+                              DropdownMenuItem<DropdownModel>(
+                                value: value,
+                                child: Row(
                                   children: [
-                                    widget.footerNote != null
-                                        ? TextSpan(
-                                            text: widget.footerNote,
-                                            style: TypographyStyle.bodyMediumn
-                                                .copyWith(
-                                              color: widget.footerNoteColor ??
-                                                  UIColors.secondary300,
-                                              fontSize: 14.sp,
+                                    value.icon != null
+                                        ? Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 0.024.sw),
+                                            child: Image.asset(
+                                              value.icon,
+                                              height: 0.025.sh,
+                                              width: 0.025.sh,
                                             ),
                                           )
-                                        : const TextSpan(),
-                                    widget.footerHighlightNote != null
-                                        ? TextSpan(
-                                            text: widget.footerHighlightNote,
-                                            style: TypographyStyle.bodyMediumn
-                                                .copyWith(
-                                              color:
-                                                  widget.footerHighlightColor,
-                                              fontSize: 14.sp,
-                                            ),
-                                          )
-                                        : const TextSpan()
+                                        : const SizedBox.shrink(),
+                                    Expanded(
+                                      child: Text(
+                                        value.name ?? '---',
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TypographyStyle.bodyMediumn
+                                            .copyWith(fontSize: 14.sp),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 0.01.sh,
-                              ),
+                              ))
+                      .toList(),
+                  icon: Icon(PhosphorIcons.caret_down,
+                      size: 0.024.sh, color: UIColors.secondary300),
+                  iconSize: 23.sp,
+                ),
+              ),
+
+              //
+              widget.footerNote != null
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: 0.001.sh,
+                        ),
+                        RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                            children: [
+                              widget.footerNote != null
+                                  ? TextSpan(
+                                      text: widget.footerNote,
+                                      style:
+                                          TypographyStyle.bodyMediumn.copyWith(
+                                        color: widget.footerNoteColor ??
+                                            UIColors.secondary300,
+                                        fontSize: 14.sp,
+                                      ),
+                                    )
+                                  : const TextSpan(),
+                              widget.footerHighlightNote != null
+                                  ? TextSpan(
+                                      text: widget.footerHighlightNote,
+                                      style:
+                                          TypographyStyle.bodyMediumn.copyWith(
+                                        color: widget.footerHighlightColor,
+                                        fontSize: 14.sp,
+                                      ),
+                                    )
+                                  : const TextSpan()
                             ],
-                          )
-                        : const SizedBox.shrink()
-                  ],
-                ),
-                SizedBox(
-                  height: 0.020.sh,
-                ),
-              ],
-            ),
-          );
-        });
+                          ),
+                        ),
+                        SizedBox(
+                          height: 0.01.sh,
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink()
+            ],
+          ),
+          SizedBox(
+            height: 0.020.sh,
+          ),
+        ],
+      ),
+    );
   }
 }

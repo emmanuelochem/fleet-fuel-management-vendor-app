@@ -1,9 +1,11 @@
 import 'package:ceuk_user_app/core/network/network_handler.dart';
 import 'package:flutter/material.dart';
 
-class StaffsRequestApi extends NetworkHandler {
-  Future<Map> findRequestById({String code, BuildContext context}) async {
-    String route = 'staff/requests/$code';
+class BanksApi extends NetworkHandler {
+  Future<Map> getProviderBanks({
+    BuildContext context,
+  }) async {
+    String route = 'banks';
     Map<String, dynamic> header = {};
     return await httpGet(
       route: route,
@@ -15,15 +17,15 @@ class StaffsRequestApi extends NetworkHandler {
     );
   }
 
-  Future<Map> confirmRequest(
-      {Map<String, dynamic> data,
-      String requestId,
-      BuildContext context}) async {
-    String route = 'staff/requests/$requestId';
+  Future<Map> verifyBanks({
+    BuildContext context,
+    Map<String, dynamic> data = const {},
+  }) async {
+    String route = 'banks/verify';
     Map<String, dynamic> header = {};
     return await httpPost(
-      data: data,
       route: route,
+      data: data,
       header: header,
       authRequired: true,
       hasCustomUrl: false,

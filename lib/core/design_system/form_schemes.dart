@@ -10,11 +10,29 @@ class FormUI {
       style: BorderStyle.none,
     ),
   );
+  static UnderlineInputBorder underlineNormal = UnderlineInputBorder(
+    borderSide: BorderSide(
+      width: 0.003.sw,
+      style: BorderStyle.none,
+      color: UIColors.primary,
+    ),
+  );
 
   static OutlineInputBorder focus = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10.r),
     borderSide: BorderSide(
-        width: 0.003.sw, style: BorderStyle.solid, color: UIColors.primary),
+      width: 0.003.sw,
+      style: BorderStyle.solid,
+      color: UIColors.primary,
+    ),
+  );
+
+  static UnderlineInputBorder underlineFocus = UnderlineInputBorder(
+    borderSide: BorderSide(
+      width: 0.003.sw,
+      style: BorderStyle.none,
+      color: UIColors.primary,
+    ),
   );
 
   static OutlineInputBorder enabled = OutlineInputBorder(
@@ -25,6 +43,15 @@ class FormUI {
       color: UIColors.primary,
     ),
   );
+
+  static UnderlineInputBorder underlineEnabled = UnderlineInputBorder(
+    borderSide: BorderSide(
+      width: 0.003.sw,
+      style: BorderStyle.none,
+      color: UIColors.primary,
+    ),
+  );
+
   static OutlineInputBorder error = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10.r),
     borderSide: BorderSide(
@@ -33,8 +60,25 @@ class FormUI {
       color: UIColors.primary,
     ),
   );
+
+  static UnderlineInputBorder underlineError = UnderlineInputBorder(
+    borderSide: BorderSide(
+      width: 0.003.sw,
+      style: BorderStyle.none,
+      color: UIColors.primary,
+    ),
+  );
+
   static OutlineInputBorder disabled = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10.r),
+    borderSide: BorderSide(
+      width: 0.00.sw,
+      style: BorderStyle.none,
+      color: UIColors.primary,
+    ),
+  );
+
+  static UnderlineInputBorder underlineDisabled = UnderlineInputBorder(
     borderSide: BorderSide(
       width: 0.00.sw,
       style: BorderStyle.none,
